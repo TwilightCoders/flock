@@ -212,9 +212,14 @@ int main(int argc, char *argv[]) {
 			timer.it_value.tv_sec = (time_t) raw_timeval;
 			timer.it_value.tv_usec = (suseconds_t) ((raw_timeval - timer.it_value.tv_sec) * 1000000);
 			break;
-		case 'E':
-			status_time_conflict = atoi(optarg);
+		case 'E': {
+			char *endptr;
+			long val = strtol(optarg, &endptr, 10);
+			if (*endptr != '\0' || val < 0 || val > 255)
+				errx(EX_USAGE, "conflict exit code must be 0-255, was '%s'", optarg);
+			status_time_conflict = (int)val;
 			break;
+		}
 		case 'V':
 			version();
 			break;
