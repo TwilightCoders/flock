@@ -14,7 +14,7 @@ jobs:
       matrix:
         cc: [gcc, clang]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install -y autoconf automake bats
       - name: Bootstrap
@@ -29,7 +29,7 @@ jobs:
         run: make check
       - name: Upload test logs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: test-logs-linux-${{ matrix.cc }}
           path: |
@@ -39,7 +39,7 @@ jobs:
   build-macos:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install dependencies
         run: brew install automake bats-core
       - name: Bootstrap
@@ -54,7 +54,7 @@ jobs:
         run: make check
       - name: Upload test logs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: test-logs-macos
           path: |
@@ -64,7 +64,7 @@ jobs:
   build-freebsd:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Build and test on FreeBSD
         uses: vmactions/freebsd-vm@v1
         with:
@@ -79,7 +79,7 @@ jobs:
             make check
       - name: Upload test logs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: test-logs-freebsd
           path: |
