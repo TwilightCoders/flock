@@ -294,7 +294,11 @@ int main(int argc, char *argv[]) {
 		}
 	} else if (argc > optind) {
 		// Use provided file descriptor
-		fd = (int)strtol(argv[optind], NULL, 10);
+		char *endptr;
+		long fdval = strtol(argv[optind], &endptr, 10);
+		if (*endptr != '\0' || fdval < 0)
+			errx(EX_USAGE, "bad file descriptor: %s", argv[optind]);
+		fd = (int)fdval;
 	} else {
 		// not enough parameters
 		errx(EX_USAGE, "requires a file path, directory path, or file descriptor");
