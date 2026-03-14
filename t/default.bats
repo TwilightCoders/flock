@@ -469,13 +469,13 @@ get_elapsed() {
 @test "lock then unlock on file descriptor" {
 	(
 		${FLOCK} -n 8 || exit 1
-		sleep 0.5
+		sleep 1
 		${FLOCK} -u 8 || exit 1
 		sleep 2
 	) 8> ${LOCKFILE} &
 	sleep 0.2
 	result=$(get_elapsed ${FLOCK} ${LOCKFILE} true)
-	# Should be blocked for ~0.5s (until unlock), not full duration
+	# Should be blocked for ~1s (until unlock), not full duration
 	was_blocked "$result"
 }
 
