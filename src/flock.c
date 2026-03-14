@@ -99,8 +99,9 @@ static inline void close_stdout(void) {
 	}
 }
 
-static void usage(void) {
-	fprintf(stderr, "\
+static void usage(int status) {
+	FILE *out = status == EX_OK ? stdout : stderr;
+	fprintf(out, "\
 Usage:\n\
  %s [-sxun][-w #][-E #] fd#\n\
  %s [-sxon][-w #][-E #] file [-c] command...\n\
@@ -119,7 +120,7 @@ Options:\n\
  -E --conflict-exit-code\n\
     --verbose    Increase verbosity\n"
 		,progname, progname, progname);
-	exit(EX_USAGE);
+	exit(status);
 }
 
 static void version(void) {
@@ -164,7 +165,7 @@ int main(int argc, char *argv[]) {
 		err(EX_OSERR, "Could not attach atexit handler");
 
 	if (argc < 2)
-		usage();
+		usage(EX_USAGE);
 
 	memset(&timer, 0, sizeof timer);
 
@@ -221,10 +222,11 @@ int main(int argc, char *argv[]) {
 			verbose=true;
 			break;
 		case 'h':
+			usage(EX_OK);
+			break;
 		case '?':
 		default:
-			usage();
-			// should not get here
+			usage(EX_USAGE);
 			break;
 		}
 	}
@@ -320,7 +322,7 @@ int main(int argc, char *argv[]) {
 	}
 	if (verbose) {
 		gettimeofday(&t_l_acq,NULL);
-		printf("took %1u microseconds\n", (t_l_acq.tv_usec - t_l_req.tv_usec)); // not adding due to time constraints
+		printf("took %ld microseconds\n", (long)(t_l_acq.tv_usec - t_l_req.tv_usec)); // not adding due to time constraints
 	}
 
 	if (have_timeout) {
