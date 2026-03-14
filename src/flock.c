@@ -143,7 +143,7 @@ int main(int argc, char *argv[]) {
 	int status_time_conflict = EXIT_FAILURE; // -E default to EXIT_FAILURE
 	struct itimerval timer, old_timer;
 	struct sigaction sa, old_sa;
-    struct timeval t_l_req, t_l_acq; // verbose time lock request and acquire
+	struct timeval t_l_req, t_l_acq; // verbose time lock request and acquire
 
 	int block = 0; // -n
 
@@ -169,22 +169,21 @@ int main(int argc, char *argv[]) {
 
 	memset(&timer, 0, sizeof timer);
 
-  /* options descriptor */
-  static struct option longopts[] = {
-    { "exclusive",  no_argument,            NULL,           'x' },
-    { "shared",     no_argument,            NULL,           's' },
-    { "unlock",     no_argument,            NULL,           'u' },
-    { "nonblock",   no_argument,            NULL,           'n' },
-    { "nb",         no_argument,            NULL,           'n' },
-    { "wait",       required_argument,      NULL,           'w' },
-    { "timeout",    required_argument,      NULL,           'w' },
-    { "conflict-exit-code",    required_argument,      NULL,           'E' },
-    { "close",      no_argument,            NULL,           'o' },
-    { "help",       no_argument,            NULL,           'h' },
-    { "version",    no_argument,            NULL,           'V' },
-    { "verbose",    no_argument,            NULL,           'v' },
-    { NULL,         0,                      NULL,           0 }
-  };
+	static struct option longopts[] = {
+		{ "exclusive",          no_argument,       NULL, 'x' },
+		{ "shared",             no_argument,       NULL, 's' },
+		{ "unlock",             no_argument,       NULL, 'u' },
+		{ "nonblock",           no_argument,       NULL, 'n' },
+		{ "nb",                 no_argument,       NULL, 'n' },
+		{ "wait",               required_argument, NULL, 'w' },
+		{ "timeout",            required_argument, NULL, 'w' },
+		{ "conflict-exit-code", required_argument, NULL, 'E' },
+		{ "close",              no_argument,       NULL, 'o' },
+		{ "help",               no_argument,       NULL, 'h' },
+		{ "version",            no_argument,       NULL, 'V' },
+		{ "verbose",            no_argument,       NULL, 'v' },
+		{ NULL,                 0,                 NULL,  0  }
+	};
 
 	while (-1 != (opt = getopt_long(argc, argv, "+suxeonhE:w:Vv", longopts, NULL))) {
 		switch (opt) {
@@ -236,7 +235,6 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-
 	if (argc - 1 > optind) {
 		/* Run command */
 		if (!strcmp(argv[optind + 1], "-c") ||
@@ -255,7 +253,6 @@ int main(int argc, char *argv[]) {
 		} else {
 			cmd_argv = &argv[optind + 1];
 		}
-
 
 		filename = argv[optind];
 
@@ -309,9 +306,9 @@ int main(int argc, char *argv[]) {
 		sa.sa_handler = timeout_handler;
 		sa.sa_flags = SA_RESETHAND;
 		if (0 != sigaction(SIGALRM, &sa, &old_sa))
-				err(EX_OSERR, "could not attach timeout handler");
+			err(EX_OSERR, "could not attach timeout handler");
 		if (0 != setitimer(ITIMER_REAL, &timer, &old_timer))
-				err(EX_OSERR, "could not set interval timer");
+			err(EX_OSERR, "could not set interval timer");
 	}
 
 	while (0 != flock(fd, type | block)) {
@@ -338,9 +335,9 @@ int main(int argc, char *argv[]) {
 
 	if (have_timeout) {
 		if (0 != setitimer(ITIMER_REAL, &old_timer, NULL))
-				err(EX_OSERR, "could not reset old interval timer");
+			err(EX_OSERR, "could not reset old interval timer");
 		if (0 != sigaction(SIGALRM, &old_sa, NULL))
-				err(EX_OSERR, "could not reattach old timeout handler");
+			err(EX_OSERR, "could not reattach old timeout handler");
 	}
 
 	if (cmd_argv) {
