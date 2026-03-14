@@ -61,13 +61,13 @@ static int flock(int fd, int operation) {
 
 	switch (operation) {
 	case LOCK_UN:
-		fl.l_type |= F_UNLCK;
+		fl.l_type = F_UNLCK;
 		break;
 	case LOCK_SH:
-		fl.l_type |= F_RDLCK;
+		fl.l_type = F_RDLCK;
 		break;
 	case LOCK_EX:
-		fl.l_type |= F_WRLCK;
+		fl.l_type = F_WRLCK;
 		break;
 	default:
 		errno = EINVAL;
