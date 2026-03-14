@@ -21,8 +21,6 @@ jobs:
         run: autoreconf --force --install
       - name: Configure
         run: ./configure CC=${{ matrix.cc }}
-      - name: Satisfy man page dependency (ronn not available in CI)
-        run: mkdir -p man && touch man/flock.1
       - name: Build
         run: make
       - name: Test
@@ -46,8 +44,6 @@ jobs:
         run: autoreconf --force --install
       - name: Configure
         run: ./configure
-      - name: Satisfy man page dependency (ronn not available in CI)
-        run: mkdir -p man && touch man/flock.1
       - name: Build
         run: make
       - name: Test
@@ -74,7 +70,6 @@ jobs:
           run: |
             autoreconf --force --install
             ./configure
-            mkdir -p man && touch man/flock.1
             make
             make check
       - name: Upload test logs

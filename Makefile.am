@@ -56,9 +56,20 @@ lint:
 
 man_MANS = man/flock.1
 man/flock.1: man/flock.1.ronn man/index.txt
-	$(RONN) $(RONN_FLAGS) -r man/flock.1.ronn
+	@if command -v $(RONN) >/dev/null 2>&1; then \
+		$(RONN) $(RONN_FLAGS) -r man/flock.1.ronn; \
+	elif [ -f $@ ]; then \
+		touch $@; \
+	else \
+		echo "Warning: ronn not found and no pre-built man page available" >&2; \
+		touch $@; \
+	fi
 man/flock.1.html: man/flock.1.ronn man/index.txt
-	$(RONN) $(RONN_FLAGS) -5 man/flock.1.ronn
+	@if command -v $(RONN) >/dev/null 2>&1; then \
+		$(RONN) $(RONN_FLAGS) -5 man/flock.1.ronn; \
+	else \
+		echo "Warning: ronn not found, skipping HTML man page" >&2; \
+	fi
 nroff-man: man/flock.1
 	$(NROFF) -man < man/flock.1
 html-man: man/flock.1.html
