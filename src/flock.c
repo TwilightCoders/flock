@@ -262,8 +262,8 @@ int main(int argc, char *argv[]) {
 		}
 
 		if (verbose) {
-			gettimeofday(&t_l_req,NULL);
-			printf("flock: getting lock ");
+			gettimeofday(&t_l_req, NULL);
+			printf("flock: getting lock\n");
 		}
 		fd = open(filename, open_flags, 0666);
 
@@ -321,8 +321,10 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	if (verbose) {
-		gettimeofday(&t_l_acq,NULL);
-		printf("took %ld microseconds\n", (long)(t_l_acq.tv_usec - t_l_req.tv_usec)); // not adding due to time constraints
+		gettimeofday(&t_l_acq, NULL);
+		long elapsed_us = (t_l_acq.tv_sec - t_l_req.tv_sec) * 1000000L
+			+ (t_l_acq.tv_usec - t_l_req.tv_usec);
+		printf("took %ld microseconds\n", elapsed_us);
 	}
 
 	if (have_timeout) {
