@@ -365,7 +365,7 @@ int main(int argc, char *argv[]) {
 			} while (w != f);
 
 			if (-1 == w)
-				err(EXIT_FAILURE, "waidpid failed");
+				err(EXIT_FAILURE, "waitpid failed");
 			else if (0 != WIFEXITED(status))
 				status = WEXITSTATUS(status);
 			else if (0 != WIFSIGNALED(status))
